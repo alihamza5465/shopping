@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   const categories = [
     { title: "New Arrivals", color: "bg-blue-500" },
-    { title: "Jeans/Shirts", color: "bg-green-500" },
+    { title: "Jeans-Shirts", color: "bg-green-500" },
     { title: "Track-Suit", color: "bg-purple-500" },
     { title: "Trousers", color: "bg-red-500" },
     { title: "Hoodies & Sweatshirts", color: "bg-indigo-500" },
-    { title: "Sale / Offers", color: "bg-pink-500" },
+    { title: "Sale-Offers", color: "bg-pink-500" },
     { title: "Summer Collection", color: "bg-yellow-500" },
     { title: "Winter Collection", color: "bg-teal-500" },
   ];

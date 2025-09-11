@@ -7,27 +7,24 @@ import Dashboard from "./Admin/Dashboard";
 import ProductForm from "./Admin/ProductForm";
 import AddproductPage from "./Admin/AddproductPage";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
+import Layout from "./Component/Layout";
+import Signin from "./Component/Signin";
+import Signup from "./Component/Signup";
 
 const App = () => {
   return (
     <>
-      {/* <Header />
-      <Navbar />
-      <Banner />
-      <Products /> */}
-      {/* <Dashboard /> */}
-      {/* <AddproductPage /> */}
-      {/* <ProductForm /> */}
-
       <BrowserRouter>
         <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Layout />} />
           <Route path="/products" element={<Products />} />
           <Route path="/admin" element={<Dashboard />} />
           <Route
             path="/admin/add-product/:title"
             element={<AddproductPage />}
           />
+          <Route path="signin" element={<Signin />} />
+          <Route path="signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
     </>

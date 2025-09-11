@@ -1,11 +1,21 @@
-import React from "react";
+import React, { use } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const token = JSON.parse(localStorage.getItem("token")) || null;
+  console.log(token);
+  const logoutFunction = () => {
+    if (token) {
+      localStorage.removeItem("token");
+      navigate("/signin");
+    }
+  };
   return (
     <>
-      <header className="bg-blue-600 shadow-md">
+      <header className="bg-gray-900 shadow-md">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -42,12 +52,13 @@ const Header = () => {
 
             {/* Right side */}
             <div className="flex items-center space-x-4">
-              <a
+              <Link
+                onClick={logoutFunction}
                 className="hidden md:block bg-white text-blue-600 px-8 py-2 text-sm font-semibold rounded-sm"
-                href="#"
+                to="/signin"
               >
-                Login &amp; Signup
-              </a>
+                {token ? "Logout" : "Login/Signup"}
+              </Link>
 
               <a className="flex items-center text-white" href="#">
                 <span className="material-icons">

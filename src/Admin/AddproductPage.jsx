@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import ProductForm from "./ProductForm";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { IoArrowBack } from "react-icons/io5"; // arrow icon
 
 const AddproductPage = () => {
+  const navigate = useNavigate();
   const { title } = useParams();
   const [actionbtn, setActionbtn] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -41,6 +43,12 @@ const AddproductPage = () => {
     <>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-6 border-b">
+          <button
+            onClick={() => navigate(-1)} // go back
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 shadow-md"
+          >
+            <IoArrowBack className="text-xl text-gray-700" />
+          </button>
           <h1 className="text-3xl font-bold text-gray-800 mb-4 sm:mb-0">
             Products of {title}
           </h1>
