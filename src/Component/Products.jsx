@@ -1,66 +1,87 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import "react-loading-skeleton/dist/skeleton.css";
-import first from "../assets/product.jpeg";
+// import first from "../assets/product.jpeg";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Products = () => {
   // Try with [] to test skeletons
-  const product = [
-    {
-      image: first,
-      title: "Niker",
-      price: 2000,
-      originalPrice: 4000,
-    },
-    {
-      image: first,
-      title: "Niker",
-      price: 2000,
-      originalPrice: 4000,
-    },
-    {
-      image: first,
-      title: "Niker",
-      price: 2000,
-      originalPrice: 4000,
-    },
-    {
-      image: first,
-      title: "Niker",
-      price: 2000,
-      originalPrice: 4000,
-    },
-    {
-      image: first,
-      title: "Niker",
-      price: 2000,
-      originalPrice: 4000,
-    },
-    {
-      image: first,
-      title: "Niker",
-      price: 2000,
-      originalPrice: 4000,
-    },
-    {
-      image: first,
-      title: "Niker",
-      price: 2000,
-      originalPrice: 4000,
-    },
-    {
-      image: first,
-      title: "Niker",
-      price: 2000,
-      originalPrice: 4000,
-    },
-  ];
+  // const product = [
+  //   {
+  //     image: first,
+  //     title: "Niker",
+  //     price: 2000,
+  //     originalPrice: 4000,
+  //   },
+  //   {
+  //     image: first,
+  //     title: "Niker",
+  //     price: 2000,
+  //     originalPrice: 4000,
+  //   },
+  //   {
+  //     image: first,
+  //     title: "Niker",
+  //     price: 2000,
+  //     originalPrice: 4000,
+  //   },
+  //   {
+  //     image: first,
+  //     title: "Niker",
+  //     price: 2000,
+  //     originalPrice: 4000,
+  //   },
+  //   {
+  //     image: first,
+  //     title: "Niker",
+  //     price: 2000,
+  //     originalPrice: 4000,
+  //   },
+  //   {
+  //     image: first,
+  //     title: "Niker",
+  //     price: 2000,
+  //     originalPrice: 4000,
+  //   },
+  //   {
+  //     image: first,
+  //     title: "Niker",
+  //     price: 2000,
+  //     originalPrice: 4000,
+  //   },
+  //   {
+  //     image: first,
+  //     title: "Niker",
+  //     price: 2000,
+  //     originalPrice: 4000,
+  //   },
+  // ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/products");
+        setProducts(res.data); // now set the state
+        console.log(res.data);
+        // const filterProduct = res.data.filter(
+        //   (item) => item.category === title
+        // );
+        // setProducts(filterProduct);
+      } catch (error) {
+        toast.error("Failed to fetch products. Please try again.");
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
     <>
-      {product.length === 0 ? (
-        <div className="shadow-md rounded-xl w-[80%] m-auto my-10 flex flex-wrap gap-6 justify-center">
+      {products.length === 0 ? (
+        <div className="shadow-md rounded-xl w-[90%] m-auto   flex flex-wrap gap-6 justify-center">
           {Array(5)
             .fill()
             .map((_, i) => (
@@ -77,31 +98,31 @@ const Products = () => {
         </div>
       ) : (
         // ✅ Show real products
-        <div className="flex flex-wrap gap-6 justify-center my-10 max-w-[80%] shadow-md rounded-xl bg-gray-400 m-auto">
-          {product.map((item, index) => (
+        <div className="flex flex-wrap gap-3 justify-center bg-gray-900  max-w-[90%] shadow-md rounded-xl m-auto">
+          {products.map((item, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 w-75 m-4 p-4 flex flex-col items-center"
+              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 w-75  p-4 flex flex-col items-center"
             >
               <div className="w-full h-40 flex items-center justify-center overflow-hidden rounded-lg">
                 <img
-                  src={item.image}
+                  src={item.imageUrl}
                   alt={item.title}
                   className="object-contain h-full w-full"
                 />
               </div>
 
               <h3 className="text-lg font-semibold text-gray-800 mt-3 text-center">
-                {item.title}
+                {item.name}
               </h3>
 
               <div className="mt-2 flex items-center gap-2">
                 <span className="text-xl font-bold text-indigo-600">
                   ${item.price}
                 </span>
-                {item.originalPrice && (
+                {item.price && (
                   <span className="text-sm text-gray-400 line-through">
-                    ${item.originalPrice}
+                    ${item.price + 20}
                   </span>
                 )}
               </div>

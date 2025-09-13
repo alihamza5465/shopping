@@ -1,7 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const adminLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/signin");
+  };
   const categories = [
     { title: "New Arrivals", color: "bg-blue-500" },
     { title: "Jeans-Shirts", color: "bg-green-500" },
@@ -33,6 +38,14 @@ const Dashboard = () => {
             <Link to={`/admin/add-product/${item.title}`}>{item.title}</Link>
           </div>
         ))}
+      </div>
+      <div className="text-3xl font-bold text-center text-gray-800 mb-8 pt-10">
+        <button
+          className="bg-black p-3 text-white cursor-pointer rounded-lg hover:bg-gray-800"
+          onClick={adminLogout}
+        >
+          Logout
+        </button>
       </div>
       <div className="mt-16 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-center py-10 px-6 rounded-xl max-w-[80%] m-auto shadow-md">
         <h2 className="text-2xl font-bold text-white ">

@@ -10,6 +10,7 @@ const Header = () => {
   const logoutFunction = () => {
     if (token) {
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
       navigate("/signin");
     }
   };

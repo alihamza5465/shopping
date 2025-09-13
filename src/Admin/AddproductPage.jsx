@@ -1,37 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import ProductForm from "./ProductForm";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5"; // arrow icon
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 const AddproductPage = () => {
   const navigate = useNavigate();
   const { title } = useParams();
   const [actionbtn, setActionbtn] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  // Dummy product list
-  const products = [
-    {
-      id: 1,
-      name: "RAVENOL CVT Fluid 1 LT",
-      price: 8000,
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuDnCHg3jvXiM84oyfxbTeWSL4T0RAhP3fs6-Q_jsSmX2idM73VQIwUvQo1pobcH9c4_mpizvSbfdDzlLPU9HJmK4QNaxMT3BFxOUXDUtUmfyl2OJQ2CyIM6lT5YRoke_Z6-MOET7jSokvEaAbp3h3RV3ThoudTpGSd4Crp-b7MK8ydj3oxcnlO_OmqmEAgj15_SvnTLafOy30mepmGV0K97V3FQFFqEO31pLI3tQTHhPL8bsYuCq-0-cwWW-cVvemIn8qyGmw7LGOk",
-    },
-    {
-      id: 2,
-      name: "Castrol Edge Engine Oil 5L",
-      price: 12000,
-      image: "https://m.media-amazon.com/images/I/71OqMY3IplL._AC_SL1500_.jpg",
-    },
-    {
-      id: 3,
-      name: "Mobil Super 1000 4L",
-      price: 9500,
-      image: "https://m.media-amazon.com/images/I/71n1XYA0KIL._AC_SL1500_.jpg",
-    },
-  ];
-
+  const [products, setProducts] = useState([]);
+  console.log(products);
   const handleAction = () => {
     setActionbtn(!actionbtn);
   };
@@ -39,6 +20,25 @@ const AddproductPage = () => {
   const showProductForm = () => {
     setShowForm(!showForm);
   };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/products");
+        // setProducts(res.data); // now set the state
+        // console.log(res.data);
+        const filterProduct = res.data.filter(
+          (item) => item.category === title
+        );
+        setProducts(filterProduct);
+      } catch (error) {
+        toast.error("Failed to fetch products. Please try again.");
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
@@ -62,7 +62,12 @@ const AddproductPage = () => {
           </div>
         </header>
 
-        {showForm && <ProductForm onClose={() => setShowForm(false)} />}
+        {showForm && (
+          <ProductForm
+            setformproducts={setProducts}
+            onClose={() => setShowForm(false)}
+          />
+        )}
         <div className="bg-white rounded-lg shadow-lg mt-6">
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left text-gray-500">
@@ -91,15 +96,13 @@ const AddproductPage = () => {
                       <img
                         alt={item.name}
                         className="w-10 h-10 rounded-md mr-4 object-cover"
-                        src={item.image}
+                        src={item.imageUrl}
                       />
                       <span className="font-medium text-gray-900">
                         {item.name}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
-                      ${item.price.toLocaleString()}
-                    </td>
+                    <td className="px-6 py-4">${item.price}</td>
                     <td className="px-6 py-4 text-right">
                       <button
                         onClick={handleAction}
@@ -124,6 +127,7 @@ const AddproductPage = () => {
             </table>
           </div>
         </div>
+        <ToastContainer />
       </div>
     </>
   );

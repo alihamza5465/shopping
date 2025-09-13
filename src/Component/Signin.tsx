@@ -23,7 +23,8 @@ const Signin = () => {
         const res = await axios.post("http://localhost:4000/signin", values);
         console.log(res.data.user);
         localStorage.setItem("token", JSON.stringify(res.data.user));
-        navigate("/");
+        localStorage.setItem("role", JSON.stringify(res.data.role));
+        navigate(res.data.role === "admin" ? "/admin" : "/");
         toast.success("Signin Successful");
       } catch (error) {
         toast.error("Signin Failed");
