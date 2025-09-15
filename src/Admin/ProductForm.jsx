@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
-const ProductForm = ({ onClose, setformproducts }) => {
+const ProductForm = ({ onClose, setformproducts, editProduct }) => {
   const [base64, setBase64] = useState("");
   const productSchema = Yup.object({
     name: Yup.string().required("Product name is required"),
@@ -14,27 +14,55 @@ const ProductForm = ({ onClose, setformproducts }) => {
     imageUrl: Yup.string().required("Image is required"),
   });
 
+  console.log(editProduct);
+
   const formik = useFormik({
     initialValues: {
-      name: "",
-      price: "",
-      description: "",
-      category: "",
-      imageUrl: "",
+      name: editProduct?.name || "",
+      price: editProduct?.price || "",
+      description: editProduct?.description || "",
+      category: editProduct?.category || "",
+      imageUrl: editProduct?.imageUrl || "",
     },
+    enableReinitialize: true,
     validationSchema: productSchema,
     onSubmit: async (values, { resetForm }) => {
       console.log("Submitted values:", values);
-      try {
-        const res = await axios.post("http://localhost:4000/products", values);
-        if (res.status === 201) {
-          toast.success("Product created successfully!");
-          setformproducts((prev) => [...prev, res.data.product]);
-          resetForm();
-          onClose();
+
+      if (editProduct) {
+        try {
+          const res = await axios.put(
+            `http://localhost:4000/api/products/${editProduct._id}`,
+            values
+          );
+          if (res.status === 200) {
+            toast.success("Product updated successfully!");
+            setformproducts((prev) =>
+              prev.map((item) =>
+                item._id === editProduct._id ? res.data.product : item
+              )
+            );
+            resetForm();
+            onClose();
+          }
+        } catch (error) {
+          toast.error("Failed to update product. Please try again.");
         }
-      } catch (error) {
-        toast.error("Failed to create product. Please try again.");
+      } else {
+        try {
+          const res = await axios.post(
+            "http://localhost:4000/products",
+            values
+          );
+          if (res.status === 201) {
+            toast.success("Product created successfully!");
+            setformproducts((prev) => [...prev, res.data.product]);
+            resetForm();
+            onClose();
+          }
+        } catch (error) {
+          toast.error("Failed to create product. Please try again.");
+        }
       }
     },
   });
@@ -167,7 +195,7 @@ const ProductForm = ({ onClose, setformproducts }) => {
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
             >
-              Save
+              {editProduct ? "Update" : "Save"}
             </button>
           </div>
         </form>

@@ -1,42 +1,37 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  return (
-    <>
-      <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-4">
-          <div className="overflow-x-auto no-scrollbar">
-            <nav className="flex items-center justify-between space-x-6 py-3 text-sm text-gray-600 whitespace-nowrap">
-              <a className="font-medium text-gray-800" href="#">
-                New Arrivals
-              </a>
-              <a className="font-medium text-gray-800" href="#">
-                Jeans/Shirts
-              </a>
-              <a className="font-medium text-gray-800" href="#">
-                Track-Suit
-              </a>
+  // Store navbar items in an array
+  const navItems = [
+    "New Arrivals",
+    "Jeans-Shirts",
+    "Track-Suit",
+    "Trousers",
+    "Hoodies & Sweatshirts",
+    "Sale / Offers",
+    "Summer Collection",
+    "Winter Collection",
+  ];
 
-              <a className="font-medium text-gray-800" href="#">
-                Trousers
-              </a>
-              <a className="font-medium text-gray-800" href="#">
-                Hoodies & Sweatshirts
-              </a>
-              <a className="font-medium text-gray-800" href="#">
-                Sale / Offers
-              </a>
-              <a className="font-medium text-gray-800" href="#">
-                Summer Collection
-              </a>
-              <a className="font-medium text-gray-800" href="#">
-                Winter Collection
-              </a>
-            </nav>
-          </div>
+  return (
+    <header className="bg-white shadow-sm">
+      <div className="container mx-auto px-4">
+        <div className="overflow-x-auto no-scrollbar">
+          <nav className="flex items-center justify-between space-x-6 py-3 text-sm text-gray-600 whitespace-nowrap">
+            {navItems.map((item, index) => (
+              <Link
+                key={index}
+                className="font-medium text-gray-800"
+                to={`/products/${encodeURIComponent(item)}`}
+              >
+                {item}
+              </Link>
+            ))}
+          </nav>
         </div>
-      </header>
-    </>
+      </div>
+    </header>
   );
 };
 

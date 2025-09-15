@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import "react-loading-skeleton/dist/skeleton.css";
-// import first from "../assets/product.jpeg";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 const Products = () => {
+  const { categories } = useParams();
+  console.log(categories);
   // Try with [] to test skeletons
   // const product = [
   //   {
@@ -98,11 +100,11 @@ const Products = () => {
         </div>
       ) : (
         // ✅ Show real products
-        <div className="flex flex-wrap gap-3 justify-center bg-gray-900  max-w-[90%] shadow-md rounded-xl m-auto">
+        <div className="flex flex-wrap gap-3 justify-center   max-w-[90%]  m-auto">
           {products.map((item, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 w-75  p-4 flex flex-col items-center"
+              className=" rounded-xl shadow-md hover:shadow-lg bg-gray-100 transition-shadow duration-300 w-75  p-4 flex flex-col items-center"
             >
               <div className="w-full h-40 flex items-center justify-center overflow-hidden rounded-lg">
                 <img

@@ -9,12 +9,14 @@ import { toast, ToastContainer } from "react-toastify";
 const AddproductPage = () => {
   const navigate = useNavigate();
   const { title } = useParams();
-  const [actionbtn, setActionbtn] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [products, setProducts] = useState([]);
+  const [eidtProduct, setEditProduct] = useState(null);
   console.log(products);
-  const handleAction = () => {
-    setActionbtn(!actionbtn);
+  const [activeMenu, setActiveMenu] = useState(null);
+
+  const handleAction = (id) => {
+    setActiveMenu(activeMenu === id ? null : id);
   };
 
   const showProductForm = () => {
@@ -38,6 +40,25 @@ const AddproductPage = () => {
 
     fetchProducts();
   }, []);
+
+  const handleDelete = async () => {
+    console.log("delete");
+    try {
+      await axios.delete(`http://localhost:4000/api/products/${activeMenu}`);
+      setProducts(products.filter((item) => item._id !== activeMenu));
+      toast.success("Product deleted successfully");
+      setActiveMenu(null);
+    } catch (error) {
+      toast.error("Failed to delete product. Please try again.");
+    }
+  };
+
+  const handleEdit = (id) => {
+    setShowForm(true);
+    console.log(id);
+    const productToEdit = products.find((item) => item._id === id);
+    setEditProduct(productToEdit);
+  };
 
   return (
     <>
@@ -66,6 +87,7 @@ const AddproductPage = () => {
           <ProductForm
             setformproducts={setProducts}
             onClose={() => setShowForm(false)}
+            editProduct={eidtProduct}
           />
         )}
         <div className="bg-white rounded-lg shadow-lg mt-6">
@@ -105,16 +127,22 @@ const AddproductPage = () => {
                     <td className="px-6 py-4">${item.price}</td>
                     <td className="px-6 py-4 text-right">
                       <button
-                        onClick={handleAction}
+                        onClick={() => handleAction(item._id)}
                         className="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100"
                       >
                         <BsThreeDots className="text-gray-600" />
-                        {actionbtn && (
+                        {activeMenu === item._id && (
                           <div className="absolute bg-white border rounded shadow-md mt-2 right-10">
-                            <button className="block px-4 py-2 text-sm text-gray-700 bg-orange-400 w-full text-left border-b-1">
+                            <button
+                              onClick={() => handleEdit(item._id)}
+                              className="block px-4 py-2 text-sm text-gray-700 bg-orange-400 w-full text-left border-b-1"
+                            >
                               Edit
                             </button>
-                            <button className="block px-4 py-2 text-sm text-gray-700 bg-red-500 w-full text-left">
+                            <button
+                              onClick={handleDelete}
+                              className="block px-4 py-2 text-sm text-gray-700 bg-red-500 w-full text-left"
+                            >
                               Delete
                             </button>
                           </div>

@@ -8,19 +8,19 @@ import Footer from "./Footer";
 
 const Layout = () => {
   return (
-    <div>
-      {/* Common Layout Parts */}
-      <Header />
-      <Navbar />
-      <Banner />
+    <>
+      <div className="sticky top-0 z-50 bg-white shadow">
+        <Header />
+        <Navbar />
+      </div>
 
-      {/* Page Specific Content */}
-      <div className="container mx-auto p-6">
+      <div className="flex-1 overflow-y-scroll container mx-auto p-6">
+        <Banner />
         <Outlet />
         <Products />
       </div>
       <Footer />
-    </div>
+    </>
   );
 };
 
