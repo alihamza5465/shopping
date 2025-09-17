@@ -8,70 +8,22 @@ import { useParams } from "react-router-dom";
 
 const Products = () => {
   const { categories } = useParams();
-  console.log(categories);
-  // Try with [] to test skeletons
-  // const product = [
-  //   {
-  //     image: first,
-  //     title: "Niker",
-  //     price: 2000,
-  //     originalPrice: 4000,
-  //   },
-  //   {
-  //     image: first,
-  //     title: "Niker",
-  //     price: 2000,
-  //     originalPrice: 4000,
-  //   },
-  //   {
-  //     image: first,
-  //     title: "Niker",
-  //     price: 2000,
-  //     originalPrice: 4000,
-  //   },
-  //   {
-  //     image: first,
-  //     title: "Niker",
-  //     price: 2000,
-  //     originalPrice: 4000,
-  //   },
-  //   {
-  //     image: first,
-  //     title: "Niker",
-  //     price: 2000,
-  //     originalPrice: 4000,
-  //   },
-  //   {
-  //     image: first,
-  //     title: "Niker",
-  //     price: 2000,
-  //     originalPrice: 4000,
-  //   },
-  //   {
-  //     image: first,
-  //     title: "Niker",
-  //     price: 2000,
-  //     originalPrice: 4000,
-  //   },
-  //   {
-  //     image: first,
-  //     title: "Niker",
-  //     price: 2000,
-  //     originalPrice: 4000,
-  //   },
-  // ];
+  const tokenID = JSON.parse(localStorage.getItem("token"));
+  const userID = tokenID._id;
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get("http://localhost:4000/api/products");
-        setProducts(res.data); // now set the state
-        console.log(res.data);
-        // const filterProduct = res.data.filter(
-        //   (item) => item.category === title
-        // );
-        // setProducts(filterProduct);
+        if (!categories) {
+          setProducts(res.data);
+        } else {
+          const filterProduct = res.data.filter(
+            (item) => item.category === categories
+          );
+          setProducts(filterProduct);
+        }
       } catch (error) {
         toast.error("Failed to fetch products. Please try again.");
       }
@@ -79,6 +31,21 @@ const Products = () => {
 
     fetchProducts();
   }, []);
+
+  const handleProduct = async (id) => {
+    const productID = id;
+
+    try {
+      const res = await axios.post("http://localhost:4000/cartitem", {
+        userID,
+        productID,
+      });
+      console.log(res.data);
+      toast("Item Save in Cart", res.data.message);
+    } catch (error) {
+      toast("Something went wrong", res.data.error);
+    }
+  };
 
   return (
     <>
@@ -130,7 +97,10 @@ const Products = () => {
               </div>
 
               <div className="mt-4 flex gap-3">
-                <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition">
+                <button
+                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition"
+                  onClick={() => handleProduct(item._id)}
+                >
                   <FaShoppingCart /> Add to Cart
                 </button>
                 <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-300 transition">

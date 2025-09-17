@@ -15,9 +15,7 @@ const Layout = () => {
       </div>
 
       <div className="flex-1 overflow-y-scroll container mx-auto p-6">
-        <Banner />
         <Outlet />
-        <Products />
       </div>
       <Footer />
     </>

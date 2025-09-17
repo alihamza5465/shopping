@@ -10,14 +10,18 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Layout from "./Component/Layout";
 import Signin from "./Component/Signin";
 import Signup from "./Component/Signup";
+import Home from "./Component/Home";
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />} />
-          <Route path="/products/:categories" element={<Products />} />
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/products/:categories" element={<Products />} />
+          </Route>
+          {/* //AdminSide */}
           <Route path="/admin" element={<Dashboard />} />
           <Route
             path="/admin/add-product/:title"

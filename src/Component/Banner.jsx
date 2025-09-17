@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
-import img1 from "../assets/banner1.jpeg";
-import img2 from "../assets/banner2.jpeg";
-import img3 from "../assets/banner3.jpeg";
+import img1 from "../assets/1.jpg";
+import img2 from "../assets/2.jpg";
+import img3 from "../assets/3.jpg";
 
 const Banner = () => {
   const slides = [
@@ -23,7 +23,7 @@ const Banner = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       nextSlide();
-    }, 10000);
+    }, 8000);
     return () => clearInterval(timer);
   }, [currentIndex]);
 

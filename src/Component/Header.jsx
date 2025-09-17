@@ -1,10 +1,12 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import CartModal from "./CartModal";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [cartModal, setCartModal] = useState(false);
   const token = JSON.parse(localStorage.getItem("token")) || null;
   console.log(token);
   const logoutFunction = () => {
@@ -14,6 +16,10 @@ const Header = () => {
       navigate("/signin");
     }
   };
+
+  const carthandle = () => {
+    setCartModal(!cartModal);
+  };
   return (
     <>
       <header className="bg-gray-900 shadow-md">
@@ -22,13 +28,9 @@ const Header = () => {
             {/* Logo */}
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <a className="text-white text-2xl font-bold italic" href="#">
-                  Flipkart
-                </a>
-                <p className="text-yellow-300 text-xs italic">
-                  Explore <span className="text-white">Plus</span>
-                  <span className="text-yellow-300 font-bold">+</span>
-                </p>
+                <Link className="text-white text-2xl font-bold italic" to="/">
+                  Own-Shop
+                </Link>
               </div>
             </div>
 
@@ -65,7 +67,11 @@ const Header = () => {
                 <span className="material-icons">
                   <FaShoppingCart />
                 </span>
-                <span className="ml-1 font-semibold">Cart</span>
+                <span className="ml-1 font-semibold" onClick={carthandle}>
+                  {" "}
+                  Cart
+                </span>
+                {cartModal && <CartModal onClose={() => setCartModal(false)} />}
               </a>
 
               {/* Mobile menu button */}
