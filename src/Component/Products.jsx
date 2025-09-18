@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import "react-loading-skeleton/dist/skeleton.css";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useParams } from "react-router-dom";
+import { Context } from "../Context";
 
 const Products = () => {
   const { categories } = useParams();
   const tokenID = JSON.parse(localStorage.getItem("token"));
   const userID = tokenID._id;
   const [products, setProducts] = useState([]);
+  const { setCartItem } = useContext(Context);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,10 +42,16 @@ const Products = () => {
         userID,
         productID,
       });
-      console.log(res.data);
-      toast("Item Save in Cart", res.data.message);
+      1;
+      const updatedCart = res.data.cart;
+      const itemCart = products.filter((item) =>
+        updatedCart.productID.includes(item._id)
+      );
+
+      setCartItem((prev) => [...prev, ...itemCart]);
+      toast(res.data.message);
     } catch (error) {
-      toast("Something went wrong", res.data.error);
+      toast("Something went wrong", error);
     }
   };
 
@@ -109,6 +117,7 @@ const Products = () => {
               </div>
             </div>
           ))}
+          <ToastContainer />
         </div>
       )}
     </>
