@@ -11,6 +11,7 @@ import Layout from "./Component/Layout";
 import Signin from "./Component/Signin";
 import Signup from "./Component/Signup";
 import Home from "./Component/Home";
+import CartModal from "./Component/CartModal";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/products/:categories" element={<Products />} />
+            {/* <Route path="/cartmodal" element={<CartModal />} /> */}
           </Route>
           {/* //AdminSide */}
           <Route path="/admin" element={<Dashboard />} />

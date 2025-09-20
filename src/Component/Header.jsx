@@ -8,7 +8,6 @@ const Header = () => {
   const navigate = useNavigate();
   const [cartModal, setCartModal] = useState(false);
   const token = JSON.parse(localStorage.getItem("token")) || null;
-  console.log(token);
   const logoutFunction = () => {
     if (token) {
       localStorage.removeItem("token");
@@ -63,16 +62,17 @@ const Header = () => {
                 {token ? "Logout" : "Login/Signup"}
               </Link>
 
-              <a className="flex items-center text-white" href="#">
+              <div
+                className="flex items-center text-white cursor-pointer"
+                onClick={carthandle}
+              >
                 <span className="material-icons">
                   <FaShoppingCart />
                 </span>
-                <span className="ml-1 font-semibold" onClick={carthandle}>
-                  {" "}
-                  Cart
-                </span>
-                {cartModal && <CartModal onClose={() => setCartModal(false)} />}
-              </a>
+                <span className="ml-1 font-semibold">Cart</span>
+              </div>
+
+              {cartModal && <CartModal onClose={() => setCartModal(false)} />}
 
               {/* Mobile menu button */}
             </div>

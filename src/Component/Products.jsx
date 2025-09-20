@@ -12,7 +12,7 @@ const Products = () => {
   const tokenID = JSON.parse(localStorage.getItem("token"));
   const userID = tokenID._id;
   const [products, setProducts] = useState([]);
-  const { setCartItem } = useContext(Context);
+  // const { setCartItem } = useContext(Context);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -42,13 +42,14 @@ const Products = () => {
         userID,
         productID,
       });
-      1;
-      const updatedCart = res.data.cart;
-      const itemCart = products.filter((item) =>
-        updatedCart.productID.includes(item._id)
-      );
 
-      setCartItem((prev) => [...prev, ...itemCart]);
+      // const updatedCart = res.data.products;
+      // console.log(updatedCart);
+      // const itemCart = products.filter((item) =>
+      //   updatedCart.productID.includes(item._id)
+      // );
+
+      // setCartItem((prev) => [...prev, ...itemCart]);
       toast(res.data.message);
     } catch (error) {
       toast("Something went wrong", error);

@@ -1,13 +1,29 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Context } from "../Context";
+import React, { useState, useEffect } from "react";
+// import { Context } from "../Context";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const CartModal = ({ onClose, cartProduct }) => {
-  // const [cartItem, setCartItem] = useState([]);
-  // const [modal, setModal] = useState(false);
-  // setCartItem(cartProduct);
-  // console.log("cart items:", cartItem);\
-  const { cartItem } = useContext(Context);
+  const [cartItem, setCartItem] = useState();
+
+  const token = JSON.parse(localStorage.getItem("token")) || null;
+  useEffect(() => {
+    try {
+      const res = axios.post("http://localhost:4000/cartitem", {
+        userID: token._id, // <-- pass the logged-in user's ID
+      });
+
+      setCartItem(res.data.products);
+      // console.log("Cart items:", res.data.products);
+      // toast(res.data.message);
+    } catch (error) {
+      toast("Something went wrong");
+      console.error(error);
+    }
+  }, []);
+
   console.log(cartItem);
+
   return (
     <>
       <div className="fixed top-20 flex right-10 z-50">
@@ -20,7 +36,7 @@ const CartModal = ({ onClose, cartProduct }) => {
           </button>
           <h2 className="text-lg font-bold mb-4">Your Cart</h2>
 
-          {cartItem.length === 0 ? (
+          {!cartItem || cartItem.length === 0 ? (
             <p className="text-gray-500 text-center">Your cart is empty.</p>
           ) : (
             <div className="space-y-4">
